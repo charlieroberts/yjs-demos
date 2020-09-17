@@ -11,6 +11,7 @@
   "author": "Kevin Jahns <kevin.jahns@pm.me>",
   "license": "UNLICENSE",
   "dependencies": {
+    "nan": "^2.14.1",
     "codemirror": "^5.56.0",
     "serve": "^11.3.2",
     "webpack": "^4.44.1",
