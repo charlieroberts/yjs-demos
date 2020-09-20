@@ -15,15 +15,10 @@ window.addEventListener('load', () => {
     ydoc
   )
 
-  const sharedhdr = document.createElement('h3')
-  sharedhdr.innerText = 'shared editor'
-  document.body.insertBefore(sharedhdr, null )
-  
-  const connectBtn = document.createElement('button')
-  connectBtn.innerText = 'Disconnect'
-  document.body.insertBefore( connectBtn, null )
-
   const yText = ydoc.getText('codemirror')
+  const connectBtn = document.querySelector('#connect')
+  provider.disconnect()
+
   const editorContainer = document.createElement('div')
   editorContainer.setAttribute('id', 'editor')
   document.body.insertBefore(editorContainer, null)
@@ -41,7 +36,9 @@ window.addEventListener('load', () => {
     lineNumbers: true
   })
 
-  const sharedhdr2 = document.createElement('h3')
+  const binding = new CodemirrorBinding(yText, editor, provider.awareness)
+
+  const sharedhdr2 = document.createElement('h3') 
   sharedhdr2.innerText = 'your editor'
   document.body.insertBefore(sharedhdr2, null )
 
@@ -59,8 +56,8 @@ window.addEventListener('load', () => {
 console.log( 'test 1 2 3' )`
   })
 
-  const binding = new CodemirrorBinding(yText, editor, provider.awareness)
 
+  const nameField = document.querySelector('#name')
   //const connectBtn = [>* @type {HTMLElement} <] (document.getElementById('y-connect-btn'))
   connectBtn.addEventListener('click', () => {
     if (provider.shouldConnect) {
@@ -68,10 +65,11 @@ console.log( 'test 1 2 3' )`
       connectBtn.textContent = 'connect'
     } else {
       provider.connect()
+      binding.awareness.setLocalStateField('user', { color: '#008833', name:nameField.value  })
       connectBtn.textContent = 'disconnect'
     }
   })
 
   // @ts-ignore
-  window.example = { provider, ydoc, yText, binding, Y }
+  window.example = { provider, ydoc, yText, Y }
 })
