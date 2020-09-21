@@ -12,12 +12,12 @@ window.addEventListener('load', () => {
   const provider = new WebsocketProvider(
    'ws://127.0.0.1:8080',
    'codemirror-large',
-    ydoc
+   ydoc,
+   { connect:false }
   )
 
   const yText = ydoc.getText('codemirror')
   const connectBtn = document.querySelector('#connect')
-  provider.disconnect()
 
   const editorContainer = document.createElement('div')
   editorContainer.setAttribute('id', 'editor')
@@ -71,5 +71,32 @@ console.log( 'test 1 2 3' )`
   })
 
   // @ts-ignore
-  window.example = { provider, ydoc, yText, Y }
+
+  const socket = new WebSocket('ws://localhost:8081');
+
+  // Listen for messages
+  socket.addEventListener('message', function (event) {
+    const msg = JSON.parse( event.data )
+
+    switch( msg.cmd ) {
+      case 'msg':
+        console.log( msg.body )
+        break
+      case 'eval':
+        eval( msg.body )
+        break
+      default:
+        console.log( 'error for message:', event.data )
+    }
+  })
+
+  window.password = null
+  window.send = function( msg ) {
+    msg.password = password
+    socket.send( JSON.stringify( msg ) )
+  }
+  window.site = function( url ) {
+    window.send({ cmd:'eval', body:`window.open( '${url}' )` })
+  }
+  window.example = { provider, ydoc, yText, Y, socket }
 })

@@ -23,4 +23,23 @@ wss.on('connection', (conn, req) => setupWSConnection(conn, req, { gc: req.url.s
 
 server.listen(port)
 
+const wss2= new WebSocket.Server({ port: 8081 });
+ 
+wss2.on('connection', function connection(ws) {
+  ws.on('message', function incoming(data) {
+    const msg = JSON.parse( data ) 
+    console.log( msg )
+
+    if( msg.password === 'PASSWORD' ) {
+      wss2.clients.forEach(function each(client) {
+        if( ws !== client ) {
+          if (client.readyState === WebSocket.OPEN) {
+            client.send(data)
+          }
+        }
+      })
+    }
+  })
+})
+
 console.log(`Listening to http://localhost:${port} ${production ? '(production)' : ''}`)
