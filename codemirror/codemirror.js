@@ -10,7 +10,8 @@ import 'codemirror/mode/javascript/javascript.js'
 window.addEventListener('load', () => {
   const ydoc = new Y.Doc()
   const provider = new WebsocketProvider(
-   'ws://127.0.0.1:8080',
+   //'ws://127.0.0.1:8080',
+   'ws://gibber.cc:8080',
    'codemirror-large',
    ydoc,
    { connect:false }
