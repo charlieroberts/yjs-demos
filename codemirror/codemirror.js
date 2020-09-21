@@ -73,7 +73,7 @@ console.log( 'test 1 2 3' )`
 
   // @ts-ignore
 
-  const socket = new WebSocket('ws://localhost:8081');
+  const socket = new WebSocket('ws://gibber.cc:8081');
 
   // Listen for messages
   socket.addEventListener('message', function (event) {
